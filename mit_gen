@@ -3,18 +3,10 @@
 from sys import argv
 from datetime import date
 
-def main():
-    if len(argv) < 2:
-        print(f"usage: {argv[0]} <full name>")
-        exit(0)
+licenses = {
+    "MIT": """MIT License
 
-    full_name = argv[1]
-    current_year = date.today().year
-
-    with open("LICENSE", "w") as f:
-        f.write(f"""MIT License
-
-Copyright (c) {current_year} {full_name}
+Copyright (c) {year} {name}
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +24,25 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.""")
+SOFTWARE."""
+}
 
-if __name__ == '__main__':
-    main()
+if len(argv) < 2:
+    print(f"usage: {argv[0]} <license type> <full name>")
+    exit(1)
+
+license_type = argv[1].upper()
+full_name = argv[2]
+current_year = date.today().year
+
+license_content = ""
+match license_type:
+    case "MIT":
+        license_content = licenses[license_type].format(year=current_year, name=full_name)
+    case _:
+        print(f"The {license_type} license is not supported yet.")
+        exit(1)
+
+license_file = open("LICENSE", "w")
+license_file.write(license_content)
+
