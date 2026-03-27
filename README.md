@@ -5,8 +5,8 @@ License generator in Python
 ## Usage
 
 ```sh
-chmod +x ./license_generator
-./license_generator <license type> <full name>
+chmod +x ./ligen
+./ligen <license_type> [-n NAME]
 ```
 
 ## License

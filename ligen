@@ -1,0 +1,32 @@
+#!/usr/bin/python3
+
+from datetime import date
+import argparse
+
+licenses = {
+    "Apache-2.0": open("licenses/Apache-2.0.txt").read(),
+    "BSD-2-Clause": open("licenses/BSD-2-Clause.txt").read(),
+    "BSD-3-Clause": open("licenses/BSD-3-Clause.txt").read(),
+    "GPL-3.0": open("licenses/GPL-3.0.txt").read(),
+    "MIT": open("licenses/MIT.txt").read(),
+}
+
+license_types = [key for key in licenses.keys()]
+name_required_license_types = ["MIT", "BSD-2-Clause", "BSD-3-Clause"]
+
+parser = argparse.ArgumentParser(description="generate a LICENSE file for your project.")
+parser.add_argument("license_type", help=f"the type of license to generate {license_types}")
+parser.add_argument("-n", "--name", help="your name to include in the license.")
+args = parser.parse_args()
+
+if args.license_type not in license_types:
+    print(f"Invalid license type. Please choose from {license_types}")
+    exit(1)
+
+if args.license_type in name_required_license_types and not args.name:
+    print(f"the {args.license_type} license requires a name.")
+    exit(1)
+
+license_file = open("LICENSE", "w")
+license_file.write(licenses[args.license_type].format(year=date.today().year, name=args.name))
+
